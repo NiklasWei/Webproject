@@ -1,5 +1,8 @@
 <?php
 
-quadratzahl($_GET["n"])
+$_POST["a"]="Benutzername";
+$_POST["b"]="Passwort"
+
+
 
 ?>

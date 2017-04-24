@@ -9,9 +9,8 @@
 
 <body>
 
-<form action="loginexecute.php" method="post">
-    <input type="text" size="15" name="a">
-    <input type="text" size="15" name="b">
+<form action="PDO.php" method="post">
+    <input type="text" size="15" name="user_name_input">
     <input type="submit" value="run">
 </form>
 

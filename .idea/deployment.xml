@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="mars.iuk.hdm-stuttgart.de">
+  <component name="PublishConfigData" autoUpload="Always" serverName="mars">
     <serverData>
-      <paths name="mars.iuk.hdm-stuttgart.de">
+      <paths name="mars">
         <serverdata>
           <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$" web="/~nw051" />
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/~ns093" />
           </mappings>
         </serverdata>
       </paths>

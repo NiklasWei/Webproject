@@ -24,7 +24,7 @@ if(isset($_POST['e_mail_input'], $_POST['password_input'])) { // Alternativ: $_G
     $row = $result->fetch_array(MYSQLI_ASSOC);
 
     // überprüfung des pw's
-    $pwhash_e = md5($passwort);
+    $pwhash_e = substr(md5($passwort), 0, -2);
     if($row !== false && $pwhash_e == $row['pw']) { // zwischen die row-klammern der name der spalte in deiner db, indem der passwort hash gespeichert wird - beispielsweise 'password'
         $_SESSION['user_id'] = $row['id'];
         echo 'Login erfolgreich. Weiter zu <a href="geschuetzt.php">internen Bereich</a>';

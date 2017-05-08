@@ -30,7 +30,7 @@ if(isset($_POST['email'], $_POST['passwort'], $_POST['passwort2'])) {
         exit;
     }
 // auss passwort wird hash ... :D
-    $passwort_hash = password_hash($passwort, PASSWORD_DEFAULT);
+    $passwort_hash = md5($passwort);
 // wenn keine fehler, SQL-Befehl und Ausführen der Abfrage
 
     $sql = "INSERT INTO users (sur_name, user_name, followers_count, following_count, pw, fore_name, e_mail)

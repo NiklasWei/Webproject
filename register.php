@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,7 +24,6 @@
     <input type="submit" value="Done">
 
 </form>
-
 
 
 </body>

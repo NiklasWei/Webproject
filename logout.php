@@ -2,7 +2,7 @@
 session_start();
 session_destroy();
 
-echo "Logout erfolgreich";
+echo "Du hast dich erfolgreich ausgeloggt!";
 ?>
 
 /**

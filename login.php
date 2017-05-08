@@ -1,26 +1,36 @@
 <?php
-session_start();
-$dsn = "mysql:dbhost=https://mars.iuk.hdm-stuttgart.de;dbname=u-nw051";
-$dbuser = "nw051";
-$dbpass = "ABesoo9ahf";
-$db = new PDO($dsn, $dbuser, $dbpass);
+session_start(); // Eine sitzung muss gestartet werden
 
-if(isset($_GET['login'])) {
+// falls keine Fehler ausgegeben werden
+// error_reporting(E_ALL);
+// ini_set('display_errors','On');
+
+// login
+$mysqli = new mysqli("localhost",
+    "nw051",
+    "ABesoo9ahf",
+    "u-nw051");
+
+// überprüfung, ob die POST's gesetzt sind
+if(isset($_POST['e_mail_input'], $_POST['password_input'])) { // Alternativ: $_GET['login']
+
+    // vars definieren
     $email = $_POST['e_mail_input'];
     $passwort = $_POST['password_input'];
 
-    $statement = $db->prepare("SELECT * FROM users WHERE e_mail = :e_mail_input");
-    $result = $statement->execute(array('e_mail_input' => $email));
-    $user = $statement->fetch();
+    // ab hier das statement
+    $query = "SELECT * FROM `users` WHERE `e_mail` = '$email'";
+    $result = $mysqli->query($query)  or trigger_error($mysqli->error."[$query]");
+    $row = $result->fetch_array(MYSQLI_ASSOC);
 
-    //Überprüfung des Passworts
-    if ($user !== false && password_verify($passwort, $user['password_input'])) {
-        $_SESSION['user_id'] = $user['id'];
-        die('Login erfolgreich. Weiter zu <a href="geschuetzt.php">internen Bereich</a>');
+    // überprüfung des pw's
+    if($row !== false && password_verify($passwort, $row['pw'])) { // zwischen die row-klammern der name der spalte in deiner db, indem der passwort hash gespeichert wird - beispielsweise 'password'
+        $_SESSION['user_id'] = $row['id'];
+        echo 'Login erfolgreich. Weiter zu <a href="geschuetzt.php">internen Bereich</a>';
+        exit;
     } else {
-        $errorMessage = "E-Mail oder Passwort war ungültig<br>";
+        $errorMessage = 'E-Mail oder Passwort ungültig<br>';
     }
-
 }
 ?>
 <!DOCTYPE html>
@@ -47,4 +57,3 @@ if(isset($errorMessage)) {
 </form>
 </body>
 </html>
-

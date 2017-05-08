@@ -33,14 +33,21 @@ if(isset($_POST['email'], $_POST['passwort'], $_POST['passwort2'])) {
     $passwort_hash = password_hash($passwort, PASSWORD_DEFAULT);
 // wenn keine fehler, SQL-Befehl und Ausführen der Abfrage
 
-    $sql = "INSERT INTO users (fore_name, sur_name, e_mail, user_name, password)
-VALUES ('$vorname','$nachname','$email','$username','$passwort_hash');";
+    $sql = "INSERT INTO users (sur_name, user_name, followers_count, following_count, pw, fore_name, e_mail)
+VALUES ('$nachname','$username','0','0','$passwort_hash','$vorname','$email');";
     $query = $db->prepare($sql);
-    $query->execute();
+    $execute_CFE = $query->execute();
+    if($execute_CFE === true) {
+//Bestätigung der Anmeldung - wenn success
+        echo "Hey ".$vorname.". Your user with the username ".$username." has been created. Thank you for choosing friendship :)";
+        exit;
+    } else {
+// Fehler anzeigen - wenn error
+        echo "Ein Fehler ist aufgetreten: <br><br>".$query->errorCode();
+        exit;
+    }
 
-//Bestätigung der Anmeldung
-    echo "Hey ".$vorname.". Your user with the username ".$username." has been created. Thank you for choosing friendship :)";
-    exit;
+
 }
 ?>
 

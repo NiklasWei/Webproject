@@ -2,8 +2,8 @@
 session_start(); // Eine sitzung muss gestartet werden
 
 // falls keine Fehler ausgegeben werden
-// error_reporting(E_ALL);
-// ini_set('display_errors','On');
+error_reporting(E_ALL);
+ini_set('display_errors','On');
 
 // login
 $mysqli = new mysqli("localhost",
@@ -24,12 +24,13 @@ if(isset($_POST['e_mail_input'], $_POST['password_input'])) { // Alternativ: $_G
     $row = $result->fetch_array(MYSQLI_ASSOC);
 
     // überprüfung des pw's
-    if($row !== false && password_verify($passwort, $row['pw'])) { // zwischen die row-klammern der name der spalte in deiner db, indem der passwort hash gespeichert wird - beispielsweise 'password'
+    $pwhash_e = md5($passwort);
+    if($row !== false && $pwhash_e == $row['pw']) { // zwischen die row-klammern der name der spalte in deiner db, indem der passwort hash gespeichert wird - beispielsweise 'password'
         $_SESSION['user_id'] = $row['id'];
         echo 'Login erfolgreich. Weiter zu <a href="geschuetzt.php">internen Bereich</a>';
         exit;
     } else {
-        $errorMessage = 'E-Mail oder Passwort ungültig<br>';
+        $errorMessage = "E-Mail oder Passwort ungültig<br><br>db_hash:".$row['pw']."<br>input_hash:$pwhash_e";
     }
 }
 ?>

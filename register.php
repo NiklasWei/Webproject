@@ -72,7 +72,7 @@ VALUES ('$nachname','$username','0','0','$passwort_hash','$vorname','$email');";
     <input type="email" size="40" maxlength="250" name="email" required><br><br>
 
     Dein Passwort:<br>
-    <input type="password" size="40"  maxlength="250" name="passwort" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Das Passwort muss mindestens 1 Großbuchstabe, 1 Kleinbuchstabe und eine Zahl enthalten. Außerdem muss es aus mindestens 8 Zeichen bestehen."><br>
+    <input type="password" size="40"  maxlength="250" name="passwort" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Das Passwort muss mindestens 1 Großbuchstabe, 1 Kleinbuchstabe und eine Zahl enthalten. Außerdem muss es aus mindestens 8 Zeichen bestehen."><br><br>
 
     Passwort wiederholen:<br>
     <input type="password" size="40" maxlength="250" name="passwort2" required><br><br>

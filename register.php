@@ -1,28 +1,84 @@
+<?php
+if(isset($_POST['email'], $_POST['passwort'], $_POST['passwort2'])) {
+    // variablen definieren
+    $email = $_POST['email'];
+    $passwort = $_POST['passwort'];
+    $passwort2 = $_POST['passwort2'];
+
+    $vorname = $_POST['fore_name_input'];
+    $nachname = $_POST['sur_name_input'];
+    $username = $_POST['user_name_input'];
+
+    // DATENBANK LOGIN -------------
+    $dsn = "mysql:dbhost=https://mars.iuk.hdm-stuttgart.de;dbname=u-nw051";
+    $dbuser = "nw051";
+    $dbpass = "ABesoo9ahf";
+    // DATENBANK LOGIN / -----------
+    $db = new PDO($dsn, $dbuser, $dbpass);
+
+    $nRowsEmail = $db->prepare("select * from users where e_mail = '$email'")->rowCount(); // zählt die registrierten user, mit der eingegeben email x
+    $nRowsUsername = $db->prepare("select * from users where user_name = '$username'")->rowCount(); // zählt die registrierten user, mit der eingegeben username x
+
+    // fehlerüberprüfung ...
+    if($passwort != $passwort2) { // checkt, ob die pw eingaben übereinanderstimmen
+        die('Die Passwortwiederholung stimmt nicht überein.');
+    } else if ($nRowsEmail > 0) { // checkt, ob bereits nh user mit der angegebenen email existiert
+        echo 'Es existiert bereits ein User mit der E-Mail '.$email.'.';
+        exit;
+    } else if ($nRowsUsername > 0) { // checkt, ob bereits nh user mit der angegebenen username existiert
+        echo 'Es existiert bereits ein User mit dem Username '.$username.'.';
+        exit;
+    }
+// auss passwort wird hash ... :D
+    $passwort_hash = md5($passwort);
+// wenn keine fehler, SQL-Befehl und Ausführen der Abfrage
+
+    $sql = "INSERT INTO users (sur_name, user_name, followers_count, following_count, pw, fore_name, e_mail)
+VALUES ('$nachname','$username','0','0','$passwort_hash','$vorname','$email');";
+    $query = $db->prepare($sql);
+    $execute_CFE = $query->execute();
+    if($execute_CFE === true) {
+//Bestätigung der Anmeldung - wenn success
+        echo "Hey ".$vorname.". Your user with the username ".$username." has been created. Thank you for choosing friendship :)";
+        exit;
+    } else {
+// Fehler anzeigen - wenn error
+        echo "Ein Fehler ist aufgetreten: <br><br>".$query->errorCode();
+        exit;
+    }
+
+
+}
+?>
+
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-
-    <title>Register</title>
-
+    <title>Registrierung</title>
 </head>
-
 <body>
 
-<h1>Register</h1>
+<form action="?register=1" method="post">
+    Vorname:<br>
+    <input type="text" size="40" maxlength="250" name="fore_name_input" required><br><br>
 
-<form action="register_execute.php" method="post">
-    <input type="text" placeholder="Your forename" size="15" name="fore_name_input">
-    <input type="text" placeholder="Your surname" size="15" name="sur_name_input">
-    <input type="text" placeholder="Your email adress" size="15" name="e_mail_input">
-    <input type="text" placeholder="Your username" size="15" name="user_name_input">
-    <input type="text" placeholder="Your password" size="15" name="password_input">
-    <input type="submit" value="Done">
+    Nachname:<br>
+    <input type="text" size="40" maxlength="250" name="sur_name_input" required><br><br>
 
+    Username:<br>
+    <input type="text" size="40" maxlength="250" name="user_name_input" required pattern="[A-Za-z0-9\t\r\n\f]*$"><br><br>
+
+    E-Mail:<br>
+    <input type="email" size="40" maxlength="250" name="email" required><br><br>
+
+    Dein Passwort:<br>
+    <input type="password" size="40"  maxlength="250" name="passwort" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Das Passwort muss mindestens 1 Großbuchstabe, 1 Kleinbuchstabe und eine Zahl enthalten. Außerdem muss es aus mindestens 8 Zeichen bestehen."><br><br>
+
+    Passwort wiederholen:<br>
+    <input type="password" size="40" maxlength="250" name="passwort2" required><br><br>
+
+    <input type="submit" value="Abschicken">
 </form>
 
-
-
 </body>
-
 </html>

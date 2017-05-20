@@ -1,9 +1,9 @@
 <?php
-phpinfo();
+echo 'hallo welt'
 ?>
 /**
  * Created by PhpStorm.
  * User: Taschi
  * Date: 20.05.17
- * Time: 14:08
+ * Time: 14:29
  */

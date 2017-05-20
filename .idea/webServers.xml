@@ -3,11 +3,11 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="01ff103b-b463-4766-ba21-e75652d08116" name="mars (project level)" url="http://mars.iuk.hdm-stuttgart.de/~ns093">
-        <fileTransfer host="mars.iuk.hdm-stuttgart.de" port="21" rootFolder="/home/ns093/public_html">
+        <fileTransfer host="mars.iuk.hdm-stuttgart.de" port="22" rootFolder="/home/ns093/public_html" accessType="SFTP">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>
-          <option name="port" value="21" />
+          <option name="port" value="22" />
         </fileTransfer>
       </webServer>
     </option>

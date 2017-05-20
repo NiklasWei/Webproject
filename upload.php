@@ -152,53 +152,47 @@ IF (isset($speichern)) {
 	$old = mysql_fetch_array($result);
 	
 	// Wenn ein Bild hochgeladen wurden - kopieren und Namen erzeugen
-	IF (isset($Bild) && $Bild['tmp_name'] != "") {
+	IF (isset($bild) && $bild['tmp_name'] != "") {
 		// Pr�fen ob die Datei hochgeladen wurde
-		if (!is_uploaded_file($Bild['tmp_name'])) {
+		if (!is_uploaded_file($bild['tmp_name'])) {
 			$formerror = true;
 			$errormessage.= "Die Datei konnte nicht hochgeladen werden. Bitte versuchen Sie es erneut.";
 		}
 		else {
 			// Zul�ssige Dateitypen kontrollieren
-			if(!($Bild['type'] == 'image/jpeg' or $Bild['type'] == 'image/png')) {
+			if(!($bild['type'] == 'image/jpeg' or $bild['type'] == 'image/png')) {
 				$formerror = true;
 				$errormessage.="Der Dateityp ist nicht zul�ssig.<br><br>Zugelassen sind nur Dateien vom Typ JPEG oder PNG!";
 			}
 			// Dateityp ist zul�ssig
 			else {
 				$uniquename=uniqid("");
-				IF ($old[logo] <> "") {
-					$logoname = $old[logo];
+				IF ($old[bild] <> "") {
+					$bildname = $old[bild];
 				}
 				ELSE {
-					$logoname = $uniquename.".jpg";
+					$bildname = $uniquename.".jpg";
 				}
-				$bildurl .= $logoname;
+				$bildurl .= $bildname;
 				$maxsize = 180;		
 				/* Aufruf von "resize" Image wird skaliert und gespeichert*/
 				resize($bild['tmp_name'], $bildurl, $maxsize);
 			}
 		}
 	}
-	ELSE { $logoname = $old['logo']; }
+	ELSE { $bildname = $old['bild']; }
 
 	// Wenn keine Fehler aufgetreten sind Daten in die Datenbank �bernehmen
 	if ($formerror == false) {
 
 	// Daten in der Datenbank �ndern
-/*	$sql = "UPDATE users SET 		 aanrede='$aanrede',
-									 aname='$aname',
-									 avorname='$avorname',
-									 atelefonvw='$atelefonvw',
-									 atelefon='$atelefon',
- 									 atelefaxvw='$atelefaxvw',
- 									 atelefax='$atelefax',
- 									 amobilvw='$amobilvw',
- 									 amobil='$amobil',
-									 amail='$amail',
-							 		 url='$url',
-									 beschreibung='$beschreibung',
-									 logo='$logoname'
+/*	$sql = "UPDATE users SET 		 name='$name',
+									 nachname ='$nachname',
+									 benutzer='$benutzer',
+									 email='$email',
+									 bild='$bild',
+									 bildna = '$bildname',
+
 						WHERE id='$userid'";*/
 						
 						
@@ -217,7 +211,7 @@ IF (isset($speichern)) {
 	
 		// Weiterleiten falls kein Datenbankfehler aufgetreten ist.
 		if ($datenbankfehler == false) {
-			header ("Location:vcard.php"); 
+			header ("Location:dbzugriff.php"); 
 		}
 		// Fehlermeldungen um Datenbankfehler erweitern.
 		else {
@@ -230,24 +224,7 @@ IF (isset($speichern)) {
 	$result = mysql_query($sql,$link);
 	$unternehmen = mysql_fetch_array($result);
 	
-	//Stammdaten zuweisen
-	$firma = $unternehmen["firma"];
-	$art = $unternehmen["art"];
-	$rechtsform = $unternehmen["rechtsform"];
-	$branche = $unternehmen["branche"];
 	
-	$strasse = $unternehmen["strasse"];
-	$hnr = $unternehmen["hnr"];
-	$ort = $unternehmen["ort"];
-	$ortsteil = $unternehmen["ortsteil"];	
-	$plz = $unternehmen["plz"];
-		
-	$ianrede = $unternehmen["ivorname"];
-	$iname = $unternehmen["iname"];	
-	$ivorname = $unternehmen["ivorname"];
-	
-	$logo = $unternehmen["logo"];*/
-	}
 
 }
 ELSE
@@ -261,8 +238,9 @@ ELSE
 	$nachname = $stammdaten["nachname"];
 	$benutzername = $stammdaten["benutzername"];
 	$email = $stammdaten ["email"];
-
-
+	$img = $stammdaten ["img"];
+	$bild = $stammdaten ["bild"];
+	$bildname = $stammdaten ["bildname"];
 }
 ?>
 

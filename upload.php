@@ -6,17 +6,17 @@
 $userid = $_SESSION['userid'];
 
 
-$logourl  = "../logos/";
+$bildurl  = "../img/";
 
 
 
 /* FUNCTION resize
 
 Resampling von auf dem Server gespeicherten PNG oder JPEG Bildern.
-Bildgröße ist in diesem Fall fest eingestellt. Maximal 600 x 600 Pixel.
-Das Speicherformat ist auf PNG festgelegt -> höhere Bildqualität.
+BildgrÃ¶e ist in diesem Fall fest eingestellt. Maximal 600 x 600 Pixel.
+Das Speicherformat ist auf PNG festgelegt -> hï¿½here BildqualitÃ¤t.
 
-Übergeben werden folgende Variablen:
+bergeben werden folgende Variablen:
 $quellbild	Rohdaten eines Bildes. JPEG oder PNG.
 $name		Bildname bzw. URL unter der das Bild abgelegt werden soll
 $breite		maximale Abmessung (X oder Y) in der das Bild erstellt werden soll
@@ -29,13 +29,13 @@ function resize($quellbild,$url,$maxsize) {
 	$breitalt = $info[0];
 	$hochalt = $info[1];
 	
-	// Falls das Bild schon die benötigte Größe besitzt kopieren
+	// Falls das Bild schon die benÃ¶tigte GrÃ¶sse besitzt kopieren
 	IF (($breitalt <= $maxsize) AND ($hochalt <= $maxsize)) { copy($quellbild, $url); }
-	
+	// hÃ¶he und breite sind auf maximalgrÃ¶ÃŸe, die quellbild URL wird kopiert
 	//sonst Umrechnung starten
 	ELSE {
-		// Bildformat überprüfen Hochformat / Querformat
-		// Prüfen ob Bild im Querformat vorliegt
+		// Bildformat ÃœberprÃ¼fen Hochformat / Querformat
+		// PrÃ¼fen ob Bild im Querformat vorliegt
 		if ($breitalt > $hochalt) {
 		$breit=$maxsize;
 		$hoch = ceil($hochalt*$breit/$breitalt);} 
@@ -55,7 +55,7 @@ function resize($quellbild,$url,$maxsize) {
 		$bildalt = imagecreatefrompng($quellbild); 
 		break;}
 		
-		// Leeres Bild mit neuen Abmaßen generieren
+		// Leeres Bild mit neuen Abmaï¿½en generieren
 		$bildneu = imagecreate($breit , $hoch);
 		
 		// Ersetzen durch imagecopyresampled
@@ -63,12 +63,12 @@ function resize($quellbild,$url,$maxsize) {
 		imagecopyresized($bildneu , $bildalt , 0 , 0 , 0 , 0 , $breit ,$hoch , $breitalt , $hochalt);
 		
 		/* Bild als jpg auf Server speichern.
-		   JPG Format wurde wegen der höheren Qualität gewählt 
-		   Bei truecolor Unterstützung der GD-Bibliothek auf PNG umstellen   */
+		   JPG Format wurde wegen der hï¿½heren Qualitï¿½t gewï¿½hlt 
+		   Bei truecolor Unterstï¿½tzung der GD-Bibliothek auf PNG umstellen   */
 		   
 		imagejpeg($bildneu,$url,100);
 		
-		// Bildspeicher löschen
+		// Bildspeicher lÃ¶schen
 		imagedestroy($bildneu);
 		imagedestroy($bildalt);
 	}
@@ -76,7 +76,7 @@ function resize($quellbild,$url,$maxsize) {
 
 
 // Ersetzen mit Projektstandard
-// Prüfen ob die userid registriert ist und ggf. abbrechen
+// PrÃ¼fen ob die userid registriert ist und ggf. abbrechen
 if (!isset($_SESSION['userid'])) { 
 	session_destroy();
 	header ("Location:index.php"); 
@@ -85,7 +85,12 @@ if (!isset($_SESSION['userid'])) {
 
 // Ersetzen mit Projektstandard
 // Datenbankverbindung herstellen
-include ("../modules/connect.inc.php");
+include ("../mars.iuk.hdm-stuttgart.de;dbname=u-nw051\");
+$dbuser = \"nw051\";
+$dbpass = \"ABesoo9ahf\";
+// DATENBANK LOGIN / -----------
+$db = new PDO($dsn, $dbuser, $dbpass);
+
 
 /*
 // Funktionen einbinden
@@ -94,13 +99,13 @@ include ("functions.inc.php");
 // Auswahllisten laden
 include("../modules/listen.inc.php");
 
-// Module für Fehlerprüfung laden
+// Module fï¿½r Fehlerprï¿½fung laden
 include("../modules/verify.inc.php");
 
-// Module für Dateipfade laden
+// Module fï¿½r Dateipfade laden
 include("../modules/path.inc.php");
 
-// Fehlervariable zurücksetzen
+// Fehlervariable zurï¿½cksetzen
 $formerror = false;
 $errormessage = "";
 $error = "";
@@ -122,7 +127,7 @@ if(isset($_POST['url'])) 			$url = strip_tags($_POST['url']);
 if(isset($_POST['beschreibung'])) 	$beschreibung = strip_tags($_POST['beschreibung'],$allowedTags);
 */
 
-if(isset($_FILES['logo']))			$logo = $_FILES['logo'];
+if(isset($_FILES['Bild']))			$logo = $_FILES['Bild'];
 
 /*
 if(isset($_POST['gruendung']))		$gruendung = $_POST['gruendung']; else $gruendung = "";
@@ -132,9 +137,9 @@ if(isset($_POST['igebdatum']))		$igebdatum = $_POST['igebdatum']; else $igebdatu
 if(isset($_POST['speichern'])) $speichern = $_POST['speichern'];
 IF (isset($speichern)) {
 
-	// Auf Pflichteingaben und Eingabefehler prüfen
+	// Auf Pflichteingaben und Eingabefehler prï¿½fen
 /*	verify("name",$aname,$errormessage,$error,$formerror); 		// Vorname verifizieren
-	verify("vorname",$avorname,$errormessage,$error,$formerror);// Straße verifizieren
+	verify("vorname",$avorname,$errormessage,$error,$formerror);// Straï¿½e verifizieren
 	
 	IF ($gruendung <> "") { verify("gruendung",$gruendung,$errormessage,$error,$formerror);}		// Gruendungsdatum verifizieren
 	IF ($igebdatum <> "") { verify("igebdatum",$gebrutsdatum,$errormessage,$error,$formerror);}		// Geburtsdatum verifizieren
@@ -142,24 +147,24 @@ IF (isset($speichern)) {
 	
 	// Ersetzen mit Projektstandard
 	// Alten Datensatz einlesen
-	$sql = "SELECT logo FROM users WHERE id='$userid'";
+	$sql = "SELECT Bild FROM users WHERE id='$userid'";
 	$result = @mysql_query($sql,$link);
 	$old = mysql_fetch_array($result);
 	
 	// Wenn ein Bild hochgeladen wurden - kopieren und Namen erzeugen
-	IF (isset($logo) && $logo['tmp_name'] != "") {
-		// Prüfen ob die Datei hochgeladen wurde
-		if (!is_uploaded_file($logo['tmp_name'])) {
+	IF (isset($Bild) && $Bild['tmp_name'] != "") {
+		// Prï¿½fen ob die Datei hochgeladen wurde
+		if (!is_uploaded_file($Bild['tmp_name'])) {
 			$formerror = true;
 			$errormessage.= "Die Datei konnte nicht hochgeladen werden. Bitte versuchen Sie es erneut.";
 		}
 		else {
-			// Zulässige Dateitypen kontrollieren
-			if(!($logo['type'] == 'image/jpeg' or $logo['type'] == 'image/png')) {
+			// Zulï¿½ssige Dateitypen kontrollieren
+			if(!($Bild['type'] == 'image/jpeg' or $Bild['type'] == 'image/png')) {
 				$formerror = true;
-				$errormessage.="Der Dateityp ist nicht zulässig.<br><br>Zugelassen sind nur Dateien vom Typ JPEG oder PNG!";
+				$errormessage.="Der Dateityp ist nicht zulï¿½ssig.<br><br>Zugelassen sind nur Dateien vom Typ JPEG oder PNG!";
 			}
-			// Dateityp ist zulässig
+			// Dateityp ist zulï¿½ssig
 			else {
 				$uniquename=uniqid("");
 				IF ($old[logo] <> "") {
@@ -168,19 +173,19 @@ IF (isset($speichern)) {
 				ELSE {
 					$logoname = $uniquename.".jpg";
 				}
-				$logourl .= $logoname;
+				$bildurl .= $logoname;
 				$maxsize = 180;		
 				/* Aufruf von "resize" Image wird skaliert und gespeichert*/
-				resize($logo['tmp_name'], $logourl, $maxsize);
+				resize($bild['tmp_name'], $bildurl, $maxsize);
 			}
 		}
 	}
 	ELSE { $logoname = $old['logo']; }
 
-	// Wenn keine Fehler aufgetreten sind Daten in die Datenbank übernehmen
+	// Wenn keine Fehler aufgetreten sind Daten in die Datenbank ï¿½bernehmen
 	if ($formerror == false) {
 
-	// Daten in der Datenbank ändern
+	// Daten in der Datenbank ï¿½ndern
 /*	$sql = "UPDATE users SET 		 aanrede='$aanrede',
 									 aname='$aname',
 									 avorname='$avorname',
@@ -198,16 +203,16 @@ IF (isset($speichern)) {
 						
 						
 			$sql = "UPDATE users SET 		
-									 logo='$logoname'
+									 bild='$bildname'
 						WHERE id='$userid'";
 							
 			
 		$result =  mysql_query($sql,$link);
 
-		//konnten die daten gespeichert werden? wenn nicht enthält ergebnis TRUE andernfalls FALSE
+		//konnten die daten gespeichert werden? wenn nicht enthï¿½lt ergebnis TRUE andernfalls FALSE
 		if ($result) {$datenbankfehler = false;} else {$datenbankfehler = true;}
 
-		// Datenbankverbindung schließen
+		// Datenbankverbindung schlieï¿½en
 		mysql_close($link);
 	
 		// Weiterleiten falls kein Datenbankfehler aufgetreten ist.
@@ -246,42 +251,18 @@ IF (isset($speichern)) {
 
 }
 ELSE
-{	// Stammdaten laden
-/*	$sql = "SELECT * FROM users WHERE id='$userid'";
+{	 Stammdaten laden
+	$sql = "SELECT * FROM users WHERE id='$userid'";
 	$result = mysql_query($sql,$link);
-	$unternehmen = mysql_fetch_array($result);
+	$stammdaten = mysql_fetch_array($result);
 	
 	//Stammdaten zuweisen
-	$firma = $unternehmen["firma"];
-	$art = $unternehmen["art"];
-	$rechtsform = $unternehmen["rechtsform"];
-	$branche = $unternehmen["branche"];
-	
-	$strasse = $unternehmen["strasse"];
-	$hnr = $unternehmen["hnr"];
-	$ort = $unternehmen["ort"];
-	$ortsteil = $unternehmen["ortsteil"];	
-	$plz = $unternehmen["plz"];
-		
-	$ianrede = $unternehmen["ivorname"];
-	$iname = $unternehmen["iname"];	
-	$ivorname = $unternehmen["ivorname"];
-	
-	$aanrede = $unternehmen["aanrede"];
-	$aname = $unternehmen["aname"];	
-	$avorname = $unternehmen["avorname"];
-	
-	$atelefonvw = $unternehmen["atelefonvw"];
-	$atelefon = $unternehmen["atelefon"];
-	$atelefaxvw = $unternehmen["atelefaxvw"];
-	$atelefax = $unternehmen["atelefax"];
-	$amobilvw = $unternehmen["amobilvw"];
-	$amobil = $unternehmen["amobil"];
-	$amail = $unternehmen["amail"];
-	
-	$url = $unternehmen["url"];
-	$logo = $unternehmen["logo"];
-	$beschreibung = $unternehmen["beschreibung"];*/
+	$name = $stammdaten["name"];
+	$nachname = $stammdaten["nachname"];
+	$benutzername = $stammdaten["benutzername"];
+	$email = $stammdaten ["email"];
+
+
 }
 ?>
 
@@ -289,8 +270,8 @@ ELSE
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
    <head>
-      <title>mein-rosbach.de / Visitenkarte verwalten</title>
-      <link rel="stylesheet" type="text/css" href="../css/user.css">
+      <title>Bilder Upload</title
+		  !!<link rel="stylesheet" type="text/css" href="../css/user.css">
    </head>
    <body>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="White">
@@ -313,7 +294,7 @@ ELSE
 <table border="0" cellspacing="10" cellpadding="0" align="center" class="content">
 <?
 if ($formerror == true) {
-	echo "<tr><td colspan=\"4\" class=\"fehlerheader\"><b>Beim Ausfüllen des Formulares sind Fehler aufgreten</b></td></tr>";
+	echo "<tr><td colspan=\"4\" class=\"fehlerheader\"><b>Beim hochladen des Bildes ist ein Fehler aufgetreten</b></td></tr>";
 	echo "<tr><td colspan=\"4\" bgcolor=\"White\"><b>Bitte Korrigieren Sie Folgende Angaben:</b></td></tr>";
 	echo "<tr><td colspan=\"4\" bgcolor=\"White\">$errormessage</td></tr>";
 }
@@ -321,7 +302,7 @@ if ($formerror == true) {
 <tr>
 	<th colspan="4" class="liste"><b>Allgemeine Angaben</b></th>
 </tr>
-<tr><td colspan="4" class="help">Diese Angaben werden aus den Stammdaten übernommen.<font color="green"> * </font> </td></tr>
+<tr><td colspan="4" class="help">Diese Angaben werden aus den Stammdaten ï¿½bernommen.<font color="green"> * </font> </td></tr>
 <tr>
 	<td colspan="4"><? echo $firma." ".$rechtsform; ?></td>
 </tr>
@@ -342,90 +323,8 @@ if ($formerror == true) {
 <tr>
 	<td colspan="4"><? echo $plz." ".$ort." / ".$ortsteil; ?></td>
 </tr>
-<tr>
-	<th colspan="4" class="liste"><b>Ansprechpartner für Interessenten</b></th>
-</tr>
 
-<tr>
-	<td class="formbez">Anrede<font color="Red">*</font><font color="green"> * </font> </td>
-	<td><? Anreden("aanrede",$aanrede)?></td>
-</tr>
-
-<tr>
-	<td <? if (isset($error['avorname'])) {echo "class=\"formerr\"";} else {echo "class=\"formbez\"";}?>>Vorname<font color="Red">*</font><font color="green"> * </font> </td>
-	<td><input type="text" name="avorname" value="<? echo $avorname; ?>"></td>
-
-	<td <? if (isset($error['aname'])) {echo "class=\"formerr\"";} else {echo "class=\"formbez\"";}?>>Nachname<font color="Red">*</font><font color="green"> * </font> </td>
-	<td><input type="text" name="aname" value="<? echo $aname ?>"></td>
-</tr>
-
-
-
-
-<tr>
-
-	<td class="formbez">Telefon<font color="green"> * </font> </td>
-	<td><input type="text" name="atelefonvw" value="<? echo $atelefonvw ?>" size="10" maxlength="7">&nbsp;/&nbsp;<input type="text" name="atelefon" value="<? echo $atelefon ?>" size="10" maxlength="12"></td>
-	<td class="formbez">Telefax<font color="green"> * </font> </td>
-	<td><input type="text" name="atelefaxvw" value="<? echo $atelefaxvw ?>" size="10" maxlength="7">&nbsp;/&nbsp;<input type="text" name="atelefax" value="<? echo $atelefax ?>" size="10" maxlength="12"></td>
-
-</tr>
-
-
-<tr>
-
-	<td class="formbez">Mobil<font color="green"> * </font> </td>
-	<td><input type="text" name="amobilvw" value="<? echo $amobilvw ?>" size="10" maxlength="4">&nbsp;/&nbsp;<input type="text" name="amobil" value="<? echo $amobil ?>" size="10" maxlength="8"></td>
-
-</tr>
-
-<tr>
-	<td <? if (isset($error['amail'])) {echo "class=\"formerr\"";} else {echo "class=\"formbez\"";}?>>E-Mail<font color="green"> * </font> </td>
-	<td colspan="3"><input type="text" size="50"  name="amail" value="<? echo $amail ?>"></td>
-</tr>
-<tr>
-	<td <? if (isset($error['url'])) {echo "class=\"formerr\"";} else {echo "class=\"formbez\"";}?>>Internet<font color="green"> * </font> </td>
-	<td colspan="3"><input type="text" size="50"  name="url" value="<? echo $url ?>"></td>
-</tr>
-
-
-<tr>
-	<th colspan="4" class="liste"><b>Beschreibungstext</b></th>
-</tr>
-<tr>
-	<td class="formbez">Beschreibung<font color="green"> * </font> </td>
-	<td colspan="3"><textarea cols="50" rows="7" name="beschreibung"><? echo $beschreibung ?></textarea></td>
-</tr>
-<tr>
-	<th colspan="4" class="liste"><b>Logo</b></th>
-</tr>
-<? IF ($logo <> "") { ?>
-<tr>
-	<td colspan="4" align="center"><img src="<? echo $logourl.$logo; ?>" border="0" alt=""></td>		
-</tr>
-<? } ?>
-<tr>
-	<td class="formbez">Neues Logo</td>
-	<td colspan="3"><input type="file" name="logo" size="45" accept="image/jpeg,image/x-png"></td>
-</tr>
-<tr>
-	<td colspan="4" align="center"><input type="submit" name="speichern" value="Speichern"><input type="Reset"><input type="submit" name="escape" value="Abbrechen"></td>		
-</tr>
-<tr><td colspan="4">Pflichtangaben sind mit einem<font color="Red"> * </font>gekennzeichnet.</td></tr>
-<tr><td colspan="4"><font color="green"> * </font> Diese Daten werden veröffentlicht.</td></tr>
-<tr><td colspan="4">Hinweis: Beim Hochladen eines neuen Logos kann es nötig sein in Ihrem Browser den "Aktualisieren-Button" zu betätigen, damit die Änderungen sichtbar werden.</td></tr>
-</table>
-</form>
-			<!-- End page content -->
-            </td>
-         </tr>
-         <!-- Fußzeile -->
-         <tr>
-            <td colspan="2" align="center" class="bottom">
-                <? include ("bottom.inc.php"); ?>
-			</td>
-		 </tr>
-      </table>
+		</table>
    </body>
 </html>
 

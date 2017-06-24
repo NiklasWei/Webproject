@@ -1,12 +1,25 @@
-<? 
+<?php
 
 // Session starten
 @session_start();
 
-$userid = $_SESSION['userid'];
+// Prüfen ob die userid registriert ist und ggf. abbrechen
+//	if (!isset($_SESSION['userid'])) {
+//session_destroy(); Wollen wir das?, Rausschmeißen aus LogIn falls Session manipuliert wurde
+//header ("Location:index.php"); // auf diese Seite wird weitergeleitet
 
 
-$bildurl  = "../img/";
+/*if(!isset($_SESSION['user_id'])) {
+	die('Du musst dich zuerst <a href="login.php">einloggen</a>!');
+}
+*/
+
+//Abfrage der Nutzer ID vom Login
+//$userid = $_SESSION['user_id'];
+$userid = 4711;
+
+// Speicherort für Bilder
+$img_url  = "/upload/";
 
 
 
@@ -53,7 +66,9 @@ function resize($quellbild,$url,$maxsize) {
 		break;
 		case 3:
 		$bildalt = imagecreatefrompng($quellbild); 
-		break;}
+		break;
+		default: $bildalt = imagecreate($breit , $hoch);} //wenn weder jpg, pgn dann wird ein leeres Bild erzeugt
+
 		
 		// Leeres Bild mit neuen Abma�en generieren
 		$bildneu = imagecreate($breit , $hoch);
@@ -75,133 +90,62 @@ function resize($quellbild,$url,$maxsize) {
 }
 
 
-// Ersetzen mit Projektstandard
-// Prüfen ob die userid registriert ist und ggf. abbrechen
-if (!isset($_SESSION['userid'])) { 
-	session_destroy();
-	header ("Location:index.php"); 
-}
-
-
-// Ersetzen mit Projektstandard
 // Datenbankverbindung herstellen
-include ("../mars.iuk.hdm-stuttgart.de;dbname=u-nw051\");
-$dbuser = \"nw051\";
-$dbpass = \"ABesoo9ahf\";
+
+// Besser als include
+$dsn = "mysql:dbhost=https://mars.iuk.hdm-stuttgart.de;dbname=u-nw051";
+$dbuser = "nw051";
+$dbpass = "ABesoo9ahf";
 // DATENBANK LOGIN / -----------
 $db = new PDO($dsn, $dbuser, $dbpass);
 
 
-/*
-// Funktionen einbinden
-include ("functions.inc.php");
+// Servervariablen werden ausgelesen
+if(isset($_FILES['upload']))			$upload = $_FILES['upload'];
 
-// Auswahllisten laden
-include("../modules/listen.inc.php");
-
-// Module f�r Fehlerpr�fung laden
-include("../modules/verify.inc.php");
-
-// Module f�r Dateipfade laden
-include("../modules/path.inc.php");
-
-// Fehlervariable zur�cksetzen
-$formerror = false;
-$errormessage = "";
-$error = "";
-
-// HTML-Tags entfernen
-$allowedTags = '<b><br>';
-
-if(isset($_POST['aanrede']))		$aanrede = $_POST['aanrede'];
-if(isset($_POST['aname']))			$aname = strip_tags($_POST['aname']);
-if(isset($_POST['avorname'])) 		$avorname = strip_tags($_POST['avorname']);
-if(isset($_POST['atelefonvw'])) 	$atelefonvw = strip_tags($_POST['atelefonvw']);
-if(isset($_POST['atelefon'])) 		$atelefon = strip_tags($_POST['atelefon']);
-if(isset($_POST['atelefaxvw'])) 	$atelefaxvw = strip_tags($_POST['atelefaxvw']);
-if(isset($_POST['atelefax'])) 		$atelefax = strip_tags($_POST['atelefax']);
-if(isset($_POST['amobilvw'])) 		$amobilvw = strip_tags($_POST['amobilvw']);
-if(isset($_POST['amobil'])) 		$amobil = strip_tags($_POST['amobil']);
-if(isset($_POST['amail'])) 			$amail = strip_tags($_POST['amail']);
-if(isset($_POST['url'])) 			$url = strip_tags($_POST['url']);
-if(isset($_POST['beschreibung'])) 	$beschreibung = strip_tags($_POST['beschreibung'],$allowedTags);
-*/
-
-if(isset($_FILES['Bild']))			$logo = $_FILES['Bild'];
-
-/*
-if(isset($_POST['gruendung']))		$gruendung = $_POST['gruendung']; else $gruendung = "";
-if(isset($_POST['igebdatum']))		$igebdatum = $_POST['igebdatum']; else $igebdatum = "";
-*/
-
+//bei Seitenübergabe auf Speichern überpürfen und holen uns den Inhalt
 if(isset($_POST['speichern'])) $speichern = $_POST['speichern'];
 IF (isset($speichern)) {
-
-	// Auf Pflichteingaben und Eingabefehler pr�fen
-/*	verify("name",$aname,$errormessage,$error,$formerror); 		// Vorname verifizieren
-	verify("vorname",$avorname,$errormessage,$error,$formerror);// Stra�e verifizieren
-	
-	IF ($gruendung <> "") { verify("gruendung",$gruendung,$errormessage,$error,$formerror);}		// Gruendungsdatum verifizieren
-	IF ($igebdatum <> "") { verify("igebdatum",$gebrutsdatum,$errormessage,$error,$formerror);}		// Geburtsdatum verifizieren
-*/	
-	
-	// Ersetzen mit Projektstandard
-	// Alten Datensatz einlesen
-	$sql = "SELECT Bild FROM users WHERE id='$userid'";
-	$result = @mysql_query($sql,$link);
-	$old = mysql_fetch_array($result);
 	
 	// Wenn ein Bild hochgeladen wurden - kopieren und Namen erzeugen
-	IF (isset($bild) && $bild['tmp_name'] != "") {
-		// Pr�fen ob die Datei hochgeladen wurde
-		if (!is_uploaded_file($bild['tmp_name'])) {
+	//tmp_name = temporärer Dateiname, überprüfen ob Server Variable leer oder voll ist
+	IF (isset($upload) && $upload['tmp_name'] != "") {
+		// Prüfen ob die Datei hochgeladen wurde
+		if (!is_uploaded_file($upload['tmp_name'])) {
 			$formerror = true;
 			$errormessage.= "Die Datei konnte nicht hochgeladen werden. Bitte versuchen Sie es erneut.";
 		}
 		else {
 			// Zul�ssige Dateitypen kontrollieren
-			if(!($bild['type'] == 'image/jpeg' or $bild['type'] == 'image/png')) {
+			if(!($upload['type'] == 'image/jpeg' or $upload['type'] == 'image/png')) {
+				//wenn es kein jpeg/png dann error
+
 				$formerror = true;
 				$errormessage.="Der Dateityp ist nicht zul�ssig.<br><br>Zugelassen sind nur Dateien vom Typ JPEG oder PNG!";
 			}
 			// Dateityp ist zul�ssig
 			else {
-				$uniquename=uniqid("");
-				IF ($old[bild] <> "") {
-					$bildname = $old[bild];
-				}
-				ELSE {
-					$bildname = $uniquename.".jpg";
-				}
-				$bildurl .= $bildname;
+				$uniquename=uniqid(""); //unique ID wird für einzelnes Bild erstellt
+			    $img_name = $uniquename.".jpg";
+
+				$img_url .= $img_name;
 				$maxsize = 180;		
 				/* Aufruf von "resize" Image wird skaliert und gespeichert*/
-				resize($bild['tmp_name'], $bildurl, $maxsize);
+				resize($upload['tmp_name'], $img_url, $maxsize);
 			}
 		}
 	}
-	ELSE { $bildname = $old['bild']; }
 
-	// Wenn keine Fehler aufgetreten sind Daten in die Datenbank �bernehmen
+
+	// Wenn keine Fehler aufgetreten sind Daten in die Datenbank übernehmen
 	if ($formerror == false) {
 
-	// Daten in der Datenbank �ndern
-/*	$sql = "UPDATE users SET 		 name='$name',
-									 nachname ='$nachname',
-									 benutzer='$benutzer',
-									 email='$email',
-									 bild='$bild',
-									 bildna = '$bildname',
 
-						WHERE id='$userid'";*/
 						
-						
-			$sql = "UPDATE users SET 		
-									 bild='$bildname'
-						WHERE id='$userid'";
-							
-			
-		$result =  mysql_query($sql,$link);
+			$sql = "INSERT INTO Image_upload ('user_id','img_name')
+					VALUES ($userid, $img_name)";
+
+		$result =  mysql_query($sql,$db);
 
 		//konnten die daten gespeichert werden? wenn nicht enth�lt ergebnis TRUE andernfalls FALSE
 		if ($result) {$datenbankfehler = false;} else {$datenbankfehler = true;}
@@ -218,91 +162,148 @@ IF (isset($speichern)) {
 			$errormessage = $errormessage."Beim Aufbau der Datenbankverbindung sind Fehler aufgetreten.<br><br>Bitte versuchen Sie es erneut.";
 		}
 	}
-	ELSE {
-/*	// Stammdaten laden im Fehlerfall
-	$sql = "SELECT * FROM users WHERE id='$userid'";
-	$result = mysql_query($sql,$link);
-	$unternehmen = mysql_fetch_array($result);
-	
-	
-
-}
-ELSE
-{	 Stammdaten laden
-	$sql = "SELECT * FROM users WHERE id='$userid'";
-	$result = mysql_query($sql,$link);
-	$stammdaten = mysql_fetch_array($result);
-	
-	//Stammdaten zuweisen
-	$name = $stammdaten["name"];
-	$nachname = $stammdaten["nachname"];
-	$benutzername = $stammdaten["benutzername"];
-	$email = $stammdaten ["email"];
-	$img = $stammdaten ["img"];
-	$bild = $stammdaten ["bild"];
-	$bildname = $stammdaten ["bildname"];
 }
 ?>
-
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
-   <head>
-      <title>Bilder Upload</title
-		  !!<link rel="stylesheet" type="text/css" href="../css/user.css">
-   </head>
-   <body>
-      <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="White">
-         <!-- Kopfzeile -->
-         <tr>
-            <td colspan="2" align="center" class="top">
-               <img src="../gfx/logo_gv.gif" width="360" height="80" border="0" alt="" vspace="0" hspace="20">
-            </td>
-         </tr>
-         <!-- Inhalt -->
-         <tr>
-            <!-- Seitenfenster -->
-            <td valign="top" bgcolor="#F5F5F5" style="border-right: 1px solid #003366;">
-               <? include ("navigation.inc.php"); ?>
-            </td>		 
-            <!-- Hauptfenster -->
-            <td align="center" valign="middle">
-		 	<!-- Page content -->             	
-				<form action="<?$php_self?>" method="post" enctype="multipart/form-data">
-<table border="0" cellspacing="10" cellpadding="0" align="center" class="content">
-<?
-if ($formerror == true) {
-	echo "<tr><td colspan=\"4\" class=\"fehlerheader\"><b>Beim hochladen des Bildes ist ein Fehler aufgetreten</b></td></tr>";
-	echo "<tr><td colspan=\"4\" bgcolor=\"White\"><b>Bitte Korrigieren Sie Folgende Angaben:</b></td></tr>";
-	echo "<tr><td colspan=\"4\" bgcolor=\"White\">$errormessage</td></tr>";
-}
-?>
-<tr>
-	<th colspan="4" class="liste"><b>Allgemeine Angaben</b></th>
-</tr>
-<tr><td colspan="4" class="help">Diese Angaben werden aus den Stammdaten �bernommen.<font color="green"> * </font> </td></tr>
-<tr>
-	<td colspan="4"><? echo $firma." ".$rechtsform; ?></td>
-</tr>
-<tr>
-	<td colspan="4"><? echo $art; ?></td>
-</tr>
-<? IF (($rechtsform == "Einzelunternehmen") OR ($rechtsform == "GbR")){
-?>
-<tr>
-	<td colspan="4"><? echo $ianrede." ".$ivorname." ".$iname; ?></td>
-</tr>
-<?
-}
-?>
-<tr>	
-	<td colspan="4"><? echo $strasse." ".$hnr; ?></td>
-</tr>
-<tr>
-	<td colspan="4"><? echo $plz." ".$ort." / ".$ortsteil; ?></td>
-</tr>
+<head>
+	<title>mein-rosbach.de / Visitenkarte verwalten</title>
+	<link rel="stylesheet" type="text/css" href="../css/user.css">
+</head>
+<body>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="White">
+	<!-- Kopfzeile -->
+	<tr>
+		<td colspan="2" align="center" class="top">
+			<img src="../gfx/logo_gv.gif" width="360" height="80" border="0" alt="" vspace="0" hspace="20">
+		</td>
+	</tr>
+	<!-- Inhalt -->
+	<tr>
+		<!-- Seitenfenster -->
+		<td valign="top" bgcolor="#F5F5F5" style="border-right: 1px solid #003366;">
+			<? include ("navigation.inc.php"); ?>
+		</td>
+		<!-- Hauptfenster -->
+		<td align="center" valign="middle">
+			<!-- Page content -->
+			<form action="<?$php_self?>" method="post" enctype="multipart/form-data">
+				<table border="0" cellspacing="10" cellpadding="0" align="center" class="content">
+					<?
+					if ($formerror == true) {
+						echo "<tr><td colspan=\"4\" class=\"fehlerheader\"><b>Beim Ausf¸llen des Formulares sind Fehler aufgreten</b></td></tr>";
+						echo "<tr><td colspan=\"4\" bgcolor=\"White\"><b>Bitte Korrigieren Sie Folgende Angaben:</b></td></tr>";
+						echo "<tr><td colspan=\"4\" bgcolor=\"White\">$errormessage</td></tr>";
+					}
+					?>
+					<tr>
+						<th colspan="4" class="liste"><b>Allgemeine Angaben</b></th>
+					</tr>
+					<tr><td colspan="4" class="help">Diese Angaben werden aus den Stammdaten ¸bernommen.<font color="green"> * </font> </td></tr>
+					<tr>
+						<td colspan="4"><? echo $firma." ".$rechtsform; ?></td>
+					</tr>
+					<tr>
+						<td colspan="4"><? echo $art; ?></td>
+					</tr>
+					<? IF (($rechtsform == "Einzelunternehmen") OR ($rechtsform == "GbR")){
+						?>
+						<tr>
+							<td colspan="4"><? echo $ianrede." ".$ivorname." ".$iname; ?></td>
+						</tr>
+						<?
+					}
+					?>
+					<tr>
+						<td colspan="4"><? echo $strasse." ".$hnr; ?></td>
+					</tr>
+					<tr>
+						<td colspan="4"><? echo $plz." ".$ort." / ".$ortsteil; ?></td>
+					</tr>
+					<tr>
+						<th colspan="4" class="liste"><b>Ansprechpartner f¸r Interessenten</b></th>
+					</tr>
 
-		</table>
-   </body>
+					<tr>
+						<td class="formbez">Anrede<font color="Red">*</font><font color="green"> * </font> </td>
+						<td><? Anreden("aanrede",$aanrede)?></td>
+					</tr>
+
+					<tr>
+						<td <? if (isset($error['avorname'])) {echo "class=\"formerr\"";} else {echo "class=\"formbez\"";}?>>Vorname<font color="Red">*</font><font color="green"> * </font> </td>
+						<td><input type="text" name="avorname" value="<? echo $avorname; ?>"></td>
+
+						<td <? if (isset($error['aname'])) {echo "class=\"formerr\"";} else {echo "class=\"formbez\"";}?>>Nachname<font color="Red">*</font><font color="green"> * </font> </td>
+						<td><input type="text" name="aname" value="<? echo $aname ?>"></td>
+					</tr>
+
+
+
+
+					<tr>
+
+						<td class="formbez">Telefon<font color="green"> * </font> </td>
+						<td><input type="text" name="atelefonvw" value="<? echo $atelefonvw ?>" size="10" maxlength="7">&nbsp;/&nbsp;<input type="text" name="atelefon" value="<? echo $atelefon ?>" size="10" maxlength="12"></td>
+						<td class="formbez">Telefax<font color="green"> * </font> </td>
+						<td><input type="text" name="atelefaxvw" value="<? echo $atelefaxvw ?>" size="10" maxlength="7">&nbsp;/&nbsp;<input type="text" name="atelefax" value="<? echo $atelefax ?>" size="10" maxlength="12"></td>
+
+					</tr>
+
+
+					<tr>
+
+						<td class="formbez">Mobil<font color="green"> * </font> </td>
+						<td><input type="text" name="amobilvw" value="<? echo $amobilvw ?>" size="10" maxlength="4">&nbsp;/&nbsp;<input type="text" name="amobil" value="<? echo $amobil ?>" size="10" maxlength="8"></td>
+
+					</tr>
+
+					<tr>
+						<td <? if (isset($error['amail'])) {echo "class=\"formerr\"";} else {echo "class=\"formbez\"";}?>>E-Mail<font color="green"> * </font> </td>
+						<td colspan="3"><input type="text" size="50"  name="amail" value="<? echo $amail ?>"></td>
+					</tr>
+					<tr>
+						<td <? if (isset($error['url'])) {echo "class=\"formerr\"";} else {echo "class=\"formbez\"";}?>>Internet<font color="green"> * </font> </td>
+						<td colspan="3"><input type="text" size="50"  name="url" value="<? echo $url ?>"></td>
+					</tr>
+
+
+					<tr>
+						<th colspan="4" class="liste"><b>Beschreibungstext</b></th>
+					</tr>
+					<tr>
+						<td class="formbez">Beschreibung<font color="green"> * </font> </td>
+						<td colspan="3"><textarea cols="50" rows="7" name="beschreibung"><? echo $beschreibung ?></textarea></td>
+					</tr>
+					<tr>
+						<th colspan="4" class="liste"><b>Logo</b></th>
+					</tr>
+					<? IF ($logo <> "") { ?>
+						<tr>
+							<td colspan="4" align="center"><img src="<? echo $logourl.$logo; ?>" border="0" alt=""></td>
+						</tr>
+					<? } ?>
+					<tr>
+						<td class="formbez">Neues Logo</td>
+						<td colspan="3"><input type="file" name="logo" size="45" accept="image/jpeg,image/x-png"></td>
+					</tr>
+					<tr>
+						<td colspan="4" align="center"><input type="submit" name="speichern" value="Speichern"><input type="Reset"><input type="submit" name="escape" value="Abbrechen"></td>
+					</tr>
+					<tr><td colspan="4">Pflichtangaben sind mit einem<font color="Red"> * </font>gekennzeichnet.</td></tr>
+					<tr><td colspan="4"><font color="green"> * </font> Diese Daten werden verˆffentlicht.</td></tr>
+					<tr><td colspan="4">Hinweis: Beim Hochladen eines neuen Logos kann es nˆtig sein in Ihrem Browser den "Aktualisieren-Button" zu bet‰tigen, damit die ƒnderungen sichtbar werden.</td></tr>
+				</table>
+			</form>
+			<!-- End page content -->
+		</td>
+	</tr>
+	<!-- Fuﬂzeile -->
+	<tr>
+		<td colspan="2" align="center" class="bottom">
+			<? include ("bottom.inc.php"); ?>
+		</td>
+	</tr>
+</table>
+</body>
 </html>
-

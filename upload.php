@@ -127,7 +127,7 @@ IF (isset($speichern)) {
 
 
 						
-			$sql = "INSERT INTO Image_upload ('user_id','img_name')
+		/*	$sql = "INSERT INTO Image_upload ('user_id','img_name')
 					VALUES ($userid, $img_name)";
 
 		$result =  mysql_query($sql,$db);
@@ -136,9 +136,15 @@ IF (isset($speichern)) {
 		if ($result) {$datenbankfehler = false;} else {$datenbankfehler = true;}
 
 		// Datenbankverbindung schlie�en
-		mysql_close($db);
-	
-		// Weiterleiten falls kein Datenbankfehler aufgetreten ist.
+		mysql_close($db); */
+
+
+		$sql = $db->prepare("INSERT INTO Image_upload (user_id, img_name) VALUES (:userid, :bildname)");
+		$sql->execute(array('userid' => $userid, 'bildname' => $img_name));
+
+
+
+// Weiterleiten falls kein Datenbankfehler aufgetreten ist.
 		if ($datenbankfehler == false) {
 			header ("Location:geschuetzt.php"); //wenn immer noch False dann erst wird er in die Datenabnk geschrieben, vorher nicht
 		}

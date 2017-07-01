@@ -13,6 +13,7 @@ $userid = $_SESSION['user_id'];
 // Speicherort für Bilder
 $img_url  = "/upload/";
 
+$formerror = false; //wenn treu dann ist etwas falsch gelaufen
 
 
 /* FUNCTION resize
@@ -135,11 +136,11 @@ IF (isset($speichern)) {
 		if ($result) {$datenbankfehler = false;} else {$datenbankfehler = true;}
 
 		// Datenbankverbindung schlie�en
-		mysql_close($link);
+		mysql_close($db);
 	
 		// Weiterleiten falls kein Datenbankfehler aufgetreten ist.
 		if ($datenbankfehler == false) {
-			header ("Location:dbzugriff.php"); 
+			header ("Location:geschuetzt.php"); //wenn immer noch False dann erst wird er in die Datenabnk geschrieben, vorher nicht
 		}
 		// Fehlermeldungen um Datenbankfehler erweitern.
 		else {
@@ -155,7 +156,7 @@ IF (isset($speichern)) {
 	<title>Aloah / Imageupload</title>
 
 </head>
-<body style='font-family:Arial;font-size:13px;'>
+<body style='font-family:Arial,sans-serif;font-size:13px;'>
 	<form action="<?php $_SERVER['PHP_SELF'];?>" method="post" enctype="multipart/form-data">
 		<div><img src="aloah.png" border="0" alt="" vspace="0" hspace="20"></div>
 		<div>Neues Bild hochladen</div>

@@ -160,53 +160,36 @@ IF (isset($speichern)) {
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
-	<title>mein-rosbach.de / Visitenkarte verwalten</title>
-	<link rel="stylesheet" type="text/css" href="../css/user.css">
+	<title>Aloah / Imageupload</title>
 </head>
 <body>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="White">
 	<!-- Kopfzeile -->
-	>	<tr>
+		<tr>
 		<td colspan="2" align="center" class="top">
 			<img src="aloah.png" border="0" alt="" vspace="0" hspace="20">
 		</td>
-	</tr
+	</tr>
 	<!-- Inhalt -->
 	<tr>
 		<!-- Hauptfenster -->
 		<td align="center" valign="middle">
 			<!-- Page content -->
-			<form action="<?$php_self?>" method="post" enctype="multipart/form-data">
+			<form action="<?$_SERVER['PHP_SELF'];?>" method="post" enctype="multipart/form-data">
 				<table border="0" cellspacing="10" cellpadding="0" align="center" class="content">
 					<tr>
-						<th colspan="4" class="liste"><b>Logo</b></th>
-					</tr>
-					<? IF ($logo <> "") { ?>
-						<tr>
-							<td colspan="4" align="center"><img src="<? echo $logourl.$logo; ?>" border="0" alt=""></td>
-						</tr>
-					<? } ?>
-					<tr>
-						<td class="formbez">Neues Logo</td>
-						<td colspan="3"><input type="file" name="logo" size="45" accept="image/jpeg,image/x-png"></td>
+						<td class="formbez">Neues Bild</td>
+						<td colspan="3"><input type="file" name="bild" size="45" accept="image/jpeg,image/x-png"></td>
 					</tr>
 					<tr>
 						<td colspan="4" align="center"><input type="submit" name="speichern" value="Speichern"><input type="Reset"><input type="submit" name="escape" value="Abbrechen"></td>
 					</tr>
-					<tr><td colspan="4">Pflichtangaben sind mit einem<font color="Red"> * </font>gekennzeichnet.</td></tr>
-					<tr><td colspan="4"><font color="green"> * </font> Diese Daten werden verˆffentlicht.</td></tr>
-					<tr><td colspan="4">Hinweis: Beim Hochladen eines neuen Logos kann es nˆtig sein in Ihrem Browser den "Aktualisieren-Button" zu bet‰tigen, damit die ƒnderungen sichtbar werden.</td></tr>
 				</table>
 			</form>
 			<!-- End page content -->
 		</td>
 	</tr>
-	<!-- Fuﬂzeile -->
-	<tr>
-		<td colspan="2" align="center" class="bottom">
-			<? include ("bottom.inc.php"); ?>
-		</td>
-	</tr>
+
 </table>
 </body>
 </html>

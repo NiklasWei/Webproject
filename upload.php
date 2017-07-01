@@ -163,33 +163,11 @@ IF (isset($speichern)) {
 	<title>Aloah / Imageupload</title>
 </head>
 <body>
-<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="White">
-	<!-- Kopfzeile -->
-		<tr>
-		<td colspan="2" align="center" class="top">
-			<img src="aloah.png" border="0" alt="" vspace="0" hspace="20">
-		</td>
-	</tr>
-	<!-- Inhalt -->
-	<tr>
-		<!-- Hauptfenster -->
-		<td align="center" valign="middle">
-			<!-- Page content -->
-			<form action="<?php $_SERVER['PHP_SELF'];?>" method="post" enctype="multipart/form-data">
-				<table border="0" cellspacing="10" cellpadding="0" align="center" class="content">
-					<tr>
-						<td class="formbez">Neues Bild</td>
-						<td colspan="3"><input type="file" name="bild" size="45" accept="image/jpeg,image/x-png"></td>
-					</tr>
-					<tr>
-						<td colspan="4" align="center"><input type="submit" name="speichern" value="Speichern"><input type="Reset"><input type="submit" name="escape" value="Abbrechen"></td>
-					</tr>
-				</table>
-			</form>
-			<!-- End page content -->
-		</td>
-	</tr>
-
-</table>
+	<form action="<?php $_SERVER['PHP_SELF'];?>" method="post" enctype="multipart/form-data">
+		<div><img src="aloah.png" border="0" alt="" vspace="0" hspace="20"></div>
+		<div>Neues Bild hochladen</div>
+		<div><input type="file" name="bild" size="45" accept="image/jpeg,image/x-png"</div>
+		<div><input type="submit" name="speichern" value="Speichern"><input type="Reset"><input type="submit" name="escape" value="Abbrechen"></div>
+	</form>
 </body>
 </html>

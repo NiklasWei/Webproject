@@ -175,7 +175,7 @@ IF (isset($speichern)) {
 		<!-- Hauptfenster -->
 		<td align="center" valign="middle">
 			<!-- Page content -->
-			<form action="<?$_SERVER['PHP_SELF'];?>" method="post" enctype="multipart/form-data">
+			<form action="<?php $_SERVER['PHP_SELF'];?>" method="post" enctype="multipart/form-data">
 				<table border="0" cellspacing="10" cellpadding="0" align="center" class="content">
 					<tr>
 						<td class="formbez">Neues Bild</td>

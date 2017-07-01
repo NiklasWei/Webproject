@@ -10,7 +10,11 @@ $userid = $_SESSION['user_id'];
 
 echo "Hallo User: ".$userid;
 
+/* Added by Tascha  */
+<br><br>
 echo "<a href=upload.php>Foto hochladen</a>";
+/* End of Taschas code */
+
 /**
  * Created by PhpStorm.
  * User: cpnik

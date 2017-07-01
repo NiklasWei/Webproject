@@ -9,6 +9,8 @@ if(!isset($_SESSION['user_id'])) {
 $userid = $_SESSION['user_id'];
 
 echo "Hallo User: ".$userid;
+
+echo "<a href=upload.php>Foto hochladen</a>";
 /**
  * Created by PhpStorm.
  * User: cpnik

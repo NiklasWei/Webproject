@@ -1,7 +1,6 @@
 <?php
-
 // Session starten
-@session_start();
+session_start();
 
 // Prüfen ob die userid registriert ist und ggf. abbrechen
 //	if (!isset($_SESSION['userid'])) {
@@ -16,7 +15,7 @@
 
 //Abfrage der Nutzer ID vom Login
 //$userid = $_SESSION['user_id'];
-$userid = 4711;
+//$userid = 4711;
 
 // Speicherort für Bilder
 $img_url  = "/upload/";
@@ -200,7 +199,7 @@ IF (isset($speichern)) {
 					<tr>
 						<th colspan="4" class="liste"><b>Allgemeine Angaben</b></th>
 					</tr>
-					<tr><td colspan="4" class="help">Diese Angaben werden aus den Stammdaten ¸bernommen.<font color="green"> * </font> </td></tr>
+					<tr><td colspan="4" class="help">Diese Angaben werden aus den Stammdaten übernommen.<font color="green"> * </font> </td></tr>
 					<tr>
 						<td colspan="4"><? echo $firma." ".$rechtsform; ?></td>
 					</tr>

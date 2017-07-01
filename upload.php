@@ -157,10 +157,11 @@ IF (isset($speichern)) {
 }
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!DOCTYPE html>
 <html>
 <head>
 	<title>Aloah / Imageupload</title>
+
 </head>
 <body>
 	<form action="<?php $_SERVER['PHP_SELF'];?>" method="post" enctype="multipart/form-data">

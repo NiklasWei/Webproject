@@ -81,16 +81,8 @@ function resize($quellbild,$url,$maxsize) {
 	}
 }
 
-
 // Datenbankverbindung herstellen
-
-// Besser als include
-$dsn = "mysql:dbhost=https://mars.iuk.hdm-stuttgart.de;dbname=u-nw051";
-$dbuser = "nw051";
-$dbpass = "ABesoo9ahf";
-// DATENBANK LOGIN / -----------
-$db = new PDO($dsn, $dbuser, $dbpass);
-
+include_once "dbzugriff.php";
 
 // Servervariablen werden ausgelesen
 if(isset($_FILES['upload']))			$upload = $_FILES['upload'];
@@ -163,7 +155,7 @@ IF (isset($speichern)) {
 	<title>Aloah / Imageupload</title>
 
 </head>
-<body>
+<body style='font-family:Arial;font-size:13px;'>
 	<form action="<?php $_SERVER['PHP_SELF'];?>" method="post" enctype="multipart/form-data">
 		<div><img src="aloah.png" border="0" alt="" vspace="0" hspace="20"></div>
 		<div>Neues Bild hochladen</div>

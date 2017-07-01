@@ -166,30 +166,18 @@ IF (isset($speichern)) {
 <body>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="White">
 	<!-- Kopfzeile -->
-	<tr>
+	>	<tr>
 		<td colspan="2" align="center" class="top">
-			<img src="../gfx/logo_gv.gif" width="360" height="80" border="0" alt="" vspace="0" hspace="20">
+			<img src="aloah.png" border="0" alt="" vspace="0" hspace="20">
 		</td>
-	</tr>
+	</tr
 	<!-- Inhalt -->
 	<tr>
-		<!-- Seitenfenster -->
-		<td valign="top" bgcolor="#F5F5F5" style="border-right: 1px solid #003366;">
-			<? include ("navigation.inc.php"); ?>
-		</td>
 		<!-- Hauptfenster -->
 		<td align="center" valign="middle">
 			<!-- Page content -->
 			<form action="<?$php_self?>" method="post" enctype="multipart/form-data">
 				<table border="0" cellspacing="10" cellpadding="0" align="center" class="content">
-					<?
-					if ($formerror == true) {
-						echo "<tr><td colspan=\"4\" class=\"fehlerheader\"><b>Beim Ausf¸llen des Formulares sind Fehler aufgreten</b></td></tr>";
-						echo "<tr><td colspan=\"4\" bgcolor=\"White\"><b>Bitte Korrigieren Sie Folgende Angaben:</b></td></tr>";
-						echo "<tr><td colspan=\"4\" bgcolor=\"White\">$errormessage</td></tr>";
-					}
-					?>
-
 					<tr>
 						<th colspan="4" class="liste"><b>Logo</b></th>
 					</tr>

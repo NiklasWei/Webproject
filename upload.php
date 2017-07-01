@@ -3,19 +3,12 @@
 session_start();
 
 // Prüfen ob die userid registriert ist und ggf. abbrechen
-//	if (!isset($_SESSION['userid'])) {
-//session_destroy(); Wollen wir das?, Rausschmeißen aus LogIn falls Session manipuliert wurde
-//header ("Location:index.php"); // auf diese Seite wird weitergeleitet
-
-
-/*if(!isset($_SESSION['user_id'])) {
+if(!isset($_SESSION['user_id'])) {
 	die('Du musst dich zuerst <a href="login.php">einloggen</a>!');
 }
-*/
 
 //Abfrage der Nutzer ID vom Login
-//$userid = $_SESSION['user_id'];
-//$userid = 4711;
+$userid = $_SESSION['user_id'];
 
 // Speicherort für Bilder
 $img_url  = "/upload/";
@@ -196,84 +189,7 @@ IF (isset($speichern)) {
 						echo "<tr><td colspan=\"4\" bgcolor=\"White\">$errormessage</td></tr>";
 					}
 					?>
-					<tr>
-						<th colspan="4" class="liste"><b>Allgemeine Angaben</b></th>
-					</tr>
-					<tr><td colspan="4" class="help">Diese Angaben werden aus den Stammdaten übernommen.<font color="green"> * </font> </td></tr>
-					<tr>
-						<td colspan="4"><? echo $firma." ".$rechtsform; ?></td>
-					</tr>
-					<tr>
-						<td colspan="4"><? echo $art; ?></td>
-					</tr>
-					<? IF (($rechtsform == "Einzelunternehmen") OR ($rechtsform == "GbR")){
-						?>
-						<tr>
-							<td colspan="4"><? echo $ianrede." ".$ivorname." ".$iname; ?></td>
-						</tr>
-						<?
-					}
-					?>
-					<tr>
-						<td colspan="4"><? echo $strasse." ".$hnr; ?></td>
-					</tr>
-					<tr>
-						<td colspan="4"><? echo $plz." ".$ort." / ".$ortsteil; ?></td>
-					</tr>
-					<tr>
-						<th colspan="4" class="liste"><b>Ansprechpartner f¸r Interessenten</b></th>
-					</tr>
 
-					<tr>
-						<td class="formbez">Anrede<font color="Red">*</font><font color="green"> * </font> </td>
-						<td><? Anreden("aanrede",$aanrede)?></td>
-					</tr>
-
-					<tr>
-						<td <? if (isset($error['avorname'])) {echo "class=\"formerr\"";} else {echo "class=\"formbez\"";}?>>Vorname<font color="Red">*</font><font color="green"> * </font> </td>
-						<td><input type="text" name="avorname" value="<? echo $avorname; ?>"></td>
-
-						<td <? if (isset($error['aname'])) {echo "class=\"formerr\"";} else {echo "class=\"formbez\"";}?>>Nachname<font color="Red">*</font><font color="green"> * </font> </td>
-						<td><input type="text" name="aname" value="<? echo $aname ?>"></td>
-					</tr>
-
-
-
-
-					<tr>
-
-						<td class="formbez">Telefon<font color="green"> * </font> </td>
-						<td><input type="text" name="atelefonvw" value="<? echo $atelefonvw ?>" size="10" maxlength="7">&nbsp;/&nbsp;<input type="text" name="atelefon" value="<? echo $atelefon ?>" size="10" maxlength="12"></td>
-						<td class="formbez">Telefax<font color="green"> * </font> </td>
-						<td><input type="text" name="atelefaxvw" value="<? echo $atelefaxvw ?>" size="10" maxlength="7">&nbsp;/&nbsp;<input type="text" name="atelefax" value="<? echo $atelefax ?>" size="10" maxlength="12"></td>
-
-					</tr>
-
-
-					<tr>
-
-						<td class="formbez">Mobil<font color="green"> * </font> </td>
-						<td><input type="text" name="amobilvw" value="<? echo $amobilvw ?>" size="10" maxlength="4">&nbsp;/&nbsp;<input type="text" name="amobil" value="<? echo $amobil ?>" size="10" maxlength="8"></td>
-
-					</tr>
-
-					<tr>
-						<td <? if (isset($error['amail'])) {echo "class=\"formerr\"";} else {echo "class=\"formbez\"";}?>>E-Mail<font color="green"> * </font> </td>
-						<td colspan="3"><input type="text" size="50"  name="amail" value="<? echo $amail ?>"></td>
-					</tr>
-					<tr>
-						<td <? if (isset($error['url'])) {echo "class=\"formerr\"";} else {echo "class=\"formbez\"";}?>>Internet<font color="green"> * </font> </td>
-						<td colspan="3"><input type="text" size="50"  name="url" value="<? echo $url ?>"></td>
-					</tr>
-
-
-					<tr>
-						<th colspan="4" class="liste"><b>Beschreibungstext</b></th>
-					</tr>
-					<tr>
-						<td class="formbez">Beschreibung<font color="green"> * </font> </td>
-						<td colspan="3"><textarea cols="50" rows="7" name="beschreibung"><? echo $beschreibung ?></textarea></td>
-					</tr>
 					<tr>
 						<th colspan="4" class="liste"><b>Logo</b></th>
 					</tr>

@@ -22,7 +22,7 @@ Resampling von auf dem Server gespeicherten PNG oder JPEG Bildern.
 Bildgröe ist in diesem Fall fest eingestellt. Maximal 600 x 600 Pixel.
 Das Speicherformat ist auf PNG festgelegt -> h�here Bildqualität.
 
-bergeben werden folgende Variablen:
+vergeben werden folgende Variablen:
 $quellbild	Rohdaten eines Bildes. JPEG oder PNG.
 $name		Bildname bzw. URL unter der das Bild abgelegt werden soll
 $breite		maximale Abmessung (X oder Y) in der das Bild erstellt werden soll
@@ -164,7 +164,7 @@ IF (isset($speichern)) {
 </head>
 <body style='font-family:Arial,sans-serif;font-size:13px;'>
 	<form action="<?php $_SERVER['PHP_SELF'];?>" method="post" enctype="multipart/form-data">
-		<div><img src="aloah.png" border="0" alt="" vspace="0" hspace="20"></div>
+		<div><img src="https://mars.iuk.hdm-stuttgart.de/~nw051/upload/aloha.png" border="0" alt="" vspace="0" hspace="20"></div>
 		<div>Neues Bild hochladen</div>
 		<div><input type="file" name="bild" size="45" accept="image/jpeg,image/x-png"</div>
 		<div><input type="submit" name="speichern" value="Speichern"><input type="Reset"><input type="submit" name="escape" value="Abbrechen"></div>

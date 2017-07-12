@@ -1,0 +1,85 @@
+* { font-family: sans-serif;
+    font-weight: 100;
+}
+
+.profilbild {
+    object-fit: cover;
+
+}
+
+[hidden] {
+    display: none !important;
+}
+
+.post-header{
+
+}
+
+.profil-picture {
+
+}
+
+
+.post {
+
+}
+
+.posten {}
+
+.posting {
+    padding: 5px;
+    border: 1px solid #e2e2e2;
+    margin: 10px auto;
+}
+
+.post-link {
+    padding: 5px;
+    background: #efefef;
+    display: block;
+    float: left;
+    width: 100%;
+}
+
+.post-profil {
+    width: 30px;
+    height: 30px;
+    float: left;
+    object-fit: cover;
+}
+
+.post-pic {
+    width: 200px;
+    height: auto;
+    object-fit: cover;
+}
+
+.post-text {}
+
+.post-name {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    float: left;
+    margin-left: 10px;
+}
+
+.group-upload {
+    width: 55%;
+    float: left;
+    padding-left: 2px;
+}
+
+.group-upload .file-upload {
+    border-radius: 0!important;
+}
+
+.btn-upload {
+    float: left;
+    border-radius: 0;
+    -webkit-border-top-right-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -moz-border-radius-topright: 5px;
+    -moz-border-radius-bottomright: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
